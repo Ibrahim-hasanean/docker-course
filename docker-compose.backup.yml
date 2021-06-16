@@ -1,0 +1,14 @@
+version: "3" #docker compose version
+services: #list docker containers
+  docker-course: #name of container i want to build
+    build: . #path to dockerfile of this containers
+    ports: #list of ports for this container
+      - "3000:3000"
+    volumes: #list of bound volumes for this container
+      - ./:/app #do not need for %cd% or ${pwd}, we can pass :ro for read only
+      - /app/node_modules # for not overwrite it
+    environment: #list of enviroment varible
+      - PORT=3000
+    #or can add .env file
+    #env_file:
+    #   - ./.env
