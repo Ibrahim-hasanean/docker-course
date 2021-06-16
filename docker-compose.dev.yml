@@ -14,5 +14,7 @@ services:
     environment:
       - NODE_ENV=development
       - SESSION_SECRET=secret
+      - MONGO_USER=ibrahim
+      - MONGO_PASSWORD=123456789
     command: npm run dev
 # docker compose file for development enviroment
