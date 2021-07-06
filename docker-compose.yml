@@ -9,6 +9,7 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
   docker-course:
     build: .
+    image: hima197/docker-course #image will pull from
     # ports: remove ports beacuse nginx will listen and redirect requests
     #   - "3000:3000"
     environment:

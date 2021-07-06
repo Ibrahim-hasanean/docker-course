@@ -1,0 +1,76 @@
+Docker Commands 
+- docker build -t docker-name .(where is docker file)
+- docker image ls OR docker images: return images in your computer
+-docker image  rm <image id>: remove image with id
+-docker run -d(for let commad free after create container)  --name <caontainer-name> <image-name>
+-docker ps : list current running containers
+-docker ps -a : list all containers ever creared in my computer.
+- docker start -a <dockerId> :restart stopped container
+- docker system prune : remove all stopped containers ,not used networks , all build cache
+- docker logs <containerId>:logs container log output not rerun container.
+- docker stop <containerId>: shutdown container take its time(max 10 sec) to complete current tasks.
+- docker kill <containerId> : shutdown right now
+- docker exec(run another command) -it(allow us to provide input to container) <containerId> <command>:execute an aditional command in container
+- docker exec -it <containerId> sh: get into container and write command as iam in linux os , to getout from container ctrl +d OR command exit.
+--docker run -v %cd%:/app:ro(read on;y docker can not change on files,can not install node_modules) -v /app/node_modules -d -p 3000:3000 --name docker-course hello-docker:>>  docker run -d(for let commad free after create container) -p dockerPort(3000 ex):devicePort(3000 ex) -v projectPath(c://asd/proj Or %cd% for cmd Or $(pwd) for powershell $(pwd)for mac>>short cut for current path ):dockerPath(/app)(v for watch changing) -v /app/node_modules(to prevent overriding "remove if not exist on local machine" node_modules folder)  --name <caontainer-name> <image-name>
+-- docker run --env PORT = 4000:set or overwrite port enviroment variabe. Or 
+-- docker --env-file ./.env(env file path): create .env file for all env variables.
+- docker rm <containerId> -fv : delete container with the volume, we dont delete volume if there is database 
+- docker volume prune : delete unused volume
+- docker-compose up : build image then run container
+- docker-compose up --build : force build image used when change in dockerfile
+- docker-compose up -f docker-compose.yml(base file) -f docker-compose.dev.yml(choose developer or production compose file) up/down: force build image used when change in dockerfile
+-docker-compose down -v(if want delete volumes) : remove image andrun container
+- docker inspect dockerID/name : show socker info including IPAddress
+-docker-compose up -f docker-compose.yml(base file) -f docker-compose.dev.yml(choose developer or production compose file) up image-name --no-deps: just rebuild image-name and don't rebuild depends images
+
+Push to dockerhub: 
+1. create docker repository 
+2. rename image : docker image tag originalName acountName(hema197)/RepoName(docker-course)
+3 docker push acountName(hema197)/RepoName(docker-course)
+4. add image:acountName(hema197)/RepoName(docker-course) to docker compose to 
+
+Run Docker in ubentue server :
+1.clone project
+2. add .env file 
+3 open: vi .profile 
+- write in bottom this line: set -o allexport; source /root/.env; set +o allexport;
+- save it : press esc and write :wq
+4. install docker in ubuntue server : 
+	- curl -fsSL https://get.docker.com -o get-docker.sh
+	- sh ./get-docker.sh
+	- install docker-compose 
+5. run docker-compose ....
+
+Push Changes to production methods:
+1.method one (not recommended)
+	-build image (prod.yml file)
+	- push changes to gethub repo
+	- pull changes from git hub : 
+	- docker-compose ..... --build image-Name-Ichange on-it(usualy node image) --no-deps --force-recreate
+2. method two Recommended
+	- build image in developer machine: docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+	- push it to dockerhub/any docker repo: docker-compose -f docker-compose.yml -f docker-compose.prod.yml push service-name(optional, the named of service we change ex: docker-course)
+	- pull node image to production server: docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull service-name(optional)
+	- docker compose up : docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps service-name(ex:docker-course)
+	note: there is dockerwatch tool to watch images changes and pulll them(not recommended)	
+ 
+
+using ubentu image:
+from cli : from cmd :docker run -t -i ubuntu /bin/bash
+	to remove ubuntu :docker rm -f container-name
+	   
+Ununtu commands : 
+-apt-get update
+-apt-get install vim
+-export RNV_VAR_NAME=VALUE : set enviroment variable
+-printenv: print all enviroment variable
+- vi .env :will create our enviroment file
+-save it : press esc and write :wq
+steps to set docker on ubuntu server 
+-copy env variables in .env
+-gp to root : pwd 
+- open: vi .profile 
+- write in bottom this line: set -o allexport; source /root/.env; set +o allexport;
+- save it : press esc and write :wq
+
